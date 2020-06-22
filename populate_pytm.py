@@ -55,9 +55,10 @@ def makeComponents(component_json, boundaryObj):
         return None
 
     for k,v in component_dict.items():
+        # print(v)
         if k == 'description':
             component.description = v
-        elif k == 'inBoundary':
+        elif k == 'inBoundary' and v is not '':
             component.inBoundary = boundaryObj[v]
         elif k == 'Options':
             for option, v_ in v.items():
@@ -65,7 +66,7 @@ def makeComponents(component_json, boundaryObj):
     return component
 
 
-def makeDataflow(dataflow_json, componentObj):
+def makeDataflow(dataflow_json, componentObj, boundaryObj):
     name = dataflow_json.pop('name')
     if dataflow_json['source'] is not '' and dataflow_json['sink'] is not '':
         src = componentObj[dataflow_json.pop('source')]
@@ -78,6 +79,11 @@ def makeDataflow(dataflow_json, componentObj):
             for option, v_ in v.items():
                 replaceAttribute(dataflow, option, v_)
         else:
+            if k == 'inBoundary':
+                continue
+            elif k == 'inBoundary' and v is not '':
+                dataflow.inBoundary = boundaryObj[v]
+                continue
             replaceAttribute(dataflow, k, v)
 
     return dataflow

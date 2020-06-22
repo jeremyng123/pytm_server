@@ -18,7 +18,8 @@ def handle_message(message):
 @socketio.on('json')
 def handle_json(json):
     print('received json: ' + str(json))
-    decode(json)
+    newjson = decode(json)
+    return newjson
 
 
 if __name__ == '__main__':
